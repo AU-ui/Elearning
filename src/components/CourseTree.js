@@ -1,233 +1,25 @@
 import React, { useState, useMemo } from 'react';
+import { courseData, getAllLectures, getCategoryStats } from '../data/courseData';
 
-const CourseTree = ({ onLectureSelect, userProgress }) => {
+const CourseTree = ({ onLectureSelect, userProgress, darkMode }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [selectedDifficulty, setSelectedDifficulty] = useState('All');
   const [sortBy, setSortBy] = useState('order');
-  const [darkMode, setDarkMode] = useState(false);
   const [showPreview, setShowPreview] = useState(null);
-  // Enhanced course data with comprehensive YouTube video IDs for web development
-  const courseData = {
-    id: 'web-dev-course',
-    title: 'Complete Web Development Course / Skill Tree',
-    lectures: [
-      // Foundation Level
-      {
-        id: 'intro-web-dev',
-        title: 'Intro to web dev',
-        description: 'Introduction to web development fundamentals',
-        youtubeId: 'qz0aGYrrlhU', // HTML Crash Course - Mosh Hamedani (English)
-        duration: '1:09:34',
-        prerequisites: [],
-        order: 1,
-        difficulty: 'Beginner',
-        category: 'Foundation'
-      },
-      {
-        id: 'html-css',
-        title: 'HTML & CSS',
-        description: 'Complete HTML and CSS tutorial',
-        youtubeId: 'vQWlgd7hV4A', // HTML & CSS Full Course - freeCodeCamp
-        duration: '6:18:38',
-        prerequisites: ['intro-web-dev'],
-        order: 2,
-        difficulty: 'Beginner',
-        category: 'Foundation'
-      },
-      {
-        id: 'javascript-basics',
-        title: 'JavaScript Basics',
-        description: 'JavaScript programming fundamentals',
-        youtubeId: 'PkZNo7MFNFg', // JavaScript Tutorial - Mosh Hamedani
-        duration: '1:37:26',
-        prerequisites: ['html-css'],
-        order: 3,
-        difficulty: 'Beginner',
-        category: 'Foundation'
-      },
-      
-      // Frontend Development
-      {
-        id: 'frontend',
-        title: 'Frontend Development',
-        description: 'Frontend development basics and tools',
-        youtubeId: '3JluqTojuME', // Frontend Development - Traversy Media
-        duration: '22:45',
-        prerequisites: ['javascript-basics'],
-        order: 4,
-        difficulty: 'Intermediate',
-        category: 'Frontend'
-      },
-      {
-        id: 'react',
-        title: 'React.js',
-        description: 'Complete React.js tutorial',
-        youtubeId: 'SqcY0GlETPk', // React Tutorial - Programming with Mosh
-        duration: '4:40:00',
-        prerequisites: ['frontend'],
-        order: 5,
-        difficulty: 'Intermediate',
-        category: 'Frontend'
-      },
-      {
-        id: 'vue',
-        title: 'Vue.js',
-        description: 'Vue.js framework tutorial',
-        youtubeId: 'qZXt1Aom3Cs', // Vue.js Tutorial - Programming with Mosh
-        duration: '3:00:00',
-        prerequisites: ['frontend'],
-        order: 5,
-        difficulty: 'Intermediate',
-        category: 'Frontend'
-      },
-      {
-        id: 'angular',
-        title: 'Angular',
-        description: 'Angular framework tutorial',
-        youtubeId: 'k5E2AVpusko', // Angular Tutorial - Programming with Mosh
-        duration: '2:00:00',
-        prerequisites: ['frontend'],
-        order: 5,
-        difficulty: 'Intermediate',
-        category: 'Frontend'
-      },
-      
-      // Backend Development
-      {
-        id: 'backend',
-        title: 'Backend Development',
-        description: 'Backend development fundamentals',
-        youtubeId: 'Oe421EPjeBE', // Backend Development - Traversy Media
-        duration: '28:15',
-        prerequisites: ['javascript-basics'],
-        order: 4,
-        difficulty: 'Intermediate',
-        category: 'Backend'
-      },
-      {
-        id: 'nodejs',
-        title: 'Node.js',
-        description: 'Node.js server-side JavaScript',
-        youtubeId: 'TlB_eWDSMt4', // Node.js Tutorial - Programming with Mosh
-        duration: '2:00:00',
-        prerequisites: ['backend'],
-        order: 5,
-        difficulty: 'Intermediate',
-        category: 'Backend'
-      },
-      {
-        id: 'python',
-        title: 'Python',
-        description: 'Python programming language',
-        youtubeId: 'kqtD5dpn9C8', // Python Tutorial - Programming with Mosh
-        duration: '6:14:07',
-        prerequisites: ['backend'],
-        order: 5,
-        difficulty: 'Intermediate',
-        category: 'Backend'
-      },
-      {
-        id: 'php',
-        title: 'PHP',
-        description: 'PHP server-side scripting',
-        youtubeId: 'OK_JCtrrv-c', // PHP Tutorial - Programming with Mosh
-        duration: '4:00:00',
-        prerequisites: ['backend'],
-        order: 5,
-        difficulty: 'Intermediate',
-        category: 'Backend'
-      },
-      
-      // Database
-      {
-        id: 'mysql',
-        title: 'MySQL',
-        description: 'MySQL database management',
-        youtubeId: '7S_tz1z_5bA', // MySQL Tutorial - Programming with Mosh
-        duration: '3:10:00',
-        prerequisites: ['backend'],
-        order: 5,
-        difficulty: 'Intermediate',
-        category: 'Database'
-      },
-      {
-        id: 'mongodb',
-        title: 'MongoDB',
-        description: 'MongoDB NoSQL database',
-        youtubeId: '-56x56UppqQ', // MongoDB Tutorial - Web Dev Simplified
-        duration: '1:00:00',
-        prerequisites: ['backend'],
-        order: 5,
-        difficulty: 'Intermediate',
-        category: 'Database'
-      },
-      
-      // DevOps & Server
-      {
-        id: 'linux-apache',
-        title: 'Linux / Apache',
-        description: 'Linux and Apache server management',
-        youtubeId: 'ROjZy1WbMIA', // Linux Tutorial - Programming with Mosh
-        duration: '2:00:00',
-        prerequisites: ['backend'],
-        order: 6,
-        difficulty: 'Advanced',
-        category: 'DevOps'
-      },
-      {
-        id: 'docker',
-        title: 'Docker',
-        description: 'Docker containerization',
-        youtubeId: 'pTFZFxd4hOI', // Docker Tutorial - Programming with Mosh
-        duration: '1:00:00',
-        prerequisites: ['linux-apache'],
-        order: 7,
-        difficulty: 'Advanced',
-        category: 'DevOps'
-      },
-      {
-        id: 'aws',
-        title: 'AWS',
-        description: 'Amazon Web Services cloud platform',
-        youtubeId: 'SJVsEHiQfrE', // AWS Tutorial - freeCodeCamp
-        duration: '1:00:00',
-        prerequisites: ['docker'],
-        order: 8,
-        difficulty: 'Advanced',
-        category: 'DevOps'
-      },
-      
-      // Tools & Technologies
-      {
-        id: 'git',
-        title: 'Git & GitHub',
-        description: 'Version control with Git and GitHub',
-        youtubeId: '8JJ101D3knE', // Git Tutorial - Programming with Mosh
-        duration: '1:00:00',
-        prerequisites: ['javascript-basics'],
-        order: 4,
-        difficulty: 'Beginner',
-        category: 'Tools'
-      },
-      {
-        id: 'typescript',
-        title: 'TypeScript',
-        description: 'TypeScript programming language',
-        youtubeId: 'BwuLxPH8IDs', // TypeScript Tutorial - Programming with Mosh
-        duration: '1:00:00',
-        prerequisites: ['javascript-basics'],
-        order: 4,
-        difficulty: 'Intermediate',
-        category: 'Tools'
-      }
-    ]
-  };
+  const [viewMode, setViewMode] = useState('grid'); // 'grid' or 'category'
+  
+  // Get all lectures from nested structure
+  const allLectures = getAllLectures();
+  const categoryStats = getCategoryStats();
 
+  // Helper functions for lecture management
   const isLectureUnlocked = (lecture) => {
-    if (lecture.prerequisites.length === 0) return true;
-    return lecture.prerequisites.every(prereq => 
-      userProgress[prereq]?.completed
+    if (!lecture.prerequisites || lecture.prerequisites.length === 0) {
+      return true;
+    }
+    return lecture.prerequisites.every(prereqId => 
+      userProgress[prereqId]?.completed
     );
   };
 
@@ -243,7 +35,7 @@ const CourseTree = ({ onLectureSelect, userProgress }) => {
 
   const getConnectionStatus = (lecture, index) => {
     const currentStatus = getLectureStatus(lecture);
-    const nextLecture = courseData.lectures[index + 1];
+    const nextLecture = allLectures[index + 1];
     
     if (!nextLecture) return null;
     
@@ -269,18 +61,18 @@ const CourseTree = ({ onLectureSelect, userProgress }) => {
 
   // Get unique categories and difficulties for filter options
   const categories = useMemo(() => {
-    const cats = [...new Set(courseData.lectures.map(lecture => lecture.category))];
+    const cats = [...new Set(allLectures.map(lecture => lecture.category))];
     return ['All', ...cats];
   }, []);
 
   const difficulties = useMemo(() => {
-    const diffs = [...new Set(courseData.lectures.map(lecture => lecture.difficulty))];
+    const diffs = [...new Set(allLectures.map(lecture => lecture.difficulty))];
     return ['All', ...diffs];
   }, []);
 
   // Filter and sort lectures
   const filteredLectures = useMemo(() => {
-    let filtered = courseData.lectures.filter(lecture => {
+    let filtered = allLectures.filter(lecture => {
       const matchesSearch = lecture.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
                            lecture.description.toLowerCase().includes(searchTerm.toLowerCase());
       const matchesCategory = selectedCategory === 'All' || lecture.category === selectedCategory;
@@ -365,15 +157,10 @@ const CourseTree = ({ onLectureSelect, userProgress }) => {
 
   const achievements = getAchievements();
 
-  // Group lectures by order for better visualization
-  const lecturesByOrder = courseData.lectures.reduce((acc, lecture) => {
-    if (!acc[lecture.order]) acc[lecture.order] = [];
-    acc[lecture.order].push(lecture);
-    return acc;
-  }, {});
-
   return (
-    <div className="bg-white/80 backdrop-blur-md rounded-2xl shadow-2xl border border-white/20 p-4 animate-slide-in-up">
+    <div className={`${darkMode ? 'bg-gray-900/80 text-white' : 'bg-white/80 text-gray-900'} backdrop-blur-md rounded-2xl shadow-2xl border ${darkMode ? 'border-gray-700/20' : 'border-white/20'} p-4 animate-slide-in-up relative overflow-hidden`}>
+      {/* Subtle gradient overlay */}
+      <div className={`absolute inset-0 ${darkMode ? 'bg-gradient-to-br from-gray-800/20 to-gray-900/20' : 'bg-gradient-to-br from-blue-50/30 to-purple-50/30'} pointer-events-none`}></div>
       <div className="text-left mb-4 ml-12">
         <div className="inline-flex items-center justify-center w-12 h-12 bg-gradient-to-r from-blue-500 to-purple-600 rounded-2xl mb-3 shadow-lg animate-float">
           <span className="text-xl">🚀</span>
@@ -389,24 +176,24 @@ const CourseTree = ({ onLectureSelect, userProgress }) => {
             {darkMode ? '☀️' : '🌙'}
           </button>
         </div>
-        <p className="text-sm text-gray-600">Master web development step by step with our comprehensive learning path</p>
+        <p className={`text-sm ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>{courseData.description}</p>
         
         {/* Progress Flow Indicator */}
-        <div className="mt-4 p-3 bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl border border-blue-200/50">
+        <div className={`mt-4 p-3 ${darkMode ? 'bg-gradient-to-r from-gray-800 to-gray-700 border-gray-600/50' : 'bg-gradient-to-r from-blue-50 to-purple-50 border-blue-200/50'} rounded-xl border`}>
           <div className="flex items-center justify-between text-xs">
-            <span className="text-gray-600">Learning Path Progress:</span>
+            <span className={darkMode ? 'text-gray-300' : 'text-gray-600'}>Learning Path Progress:</span>
             <div className="flex items-center space-x-2">
               <div className="flex items-center">
                 <div className="w-3 h-3 bg-green-500 rounded-full mr-1"></div>
-                <span>Completed</span>
+                <span className={darkMode ? 'text-gray-300' : 'text-gray-600'}>Completed</span>
               </div>
               <div className="flex items-center">
                 <div className="w-3 h-3 bg-blue-500 rounded-full mr-1"></div>
-                <span>Available</span>
+                <span className={darkMode ? 'text-gray-300' : 'text-gray-600'}>Available</span>
               </div>
               <div className="flex items-center">
                 <div className="w-3 h-3 bg-gray-400 rounded-full mr-1"></div>
-                <span>Locked</span>
+                <span className={darkMode ? 'text-gray-300' : 'text-gray-600'}>Locked</span>
               </div>
             </div>
           </div>
@@ -438,18 +225,25 @@ const CourseTree = ({ onLectureSelect, userProgress }) => {
       
       {/* Advanced Search and Filter Controls */}
       <div className="ml-12 mb-6">
-        <div className="bg-white/70 backdrop-blur-md rounded-2xl shadow-xl border border-white/20 p-6">
+        <div className={`${darkMode ? 'bg-gray-800/70 border-gray-700/20' : 'bg-white/70 border-white/20'} backdrop-blur-md rounded-2xl shadow-xl border p-6 relative overflow-hidden`}>
+          {/* Subtle background pattern */}
+          <div className="absolute inset-0 opacity-5">
+            <div className="absolute inset-0" style={{
+              backgroundImage: `radial-gradient(circle at 1px 1px, ${darkMode ? 'white' : 'black'} 1px, transparent 0)`,
+              backgroundSize: '20px 20px'
+            }}></div>
+          </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             {/* Search Bar */}
             <div className="lg:col-span-2">
-              <label className="block text-sm font-medium text-gray-700 mb-2">Search Lectures</label>
+              <label className={`block text-sm font-medium ${darkMode ? 'text-gray-300' : 'text-gray-700'} mb-2`}>Search Lectures</label>
               <div className="relative">
                 <input
                   type="text"
                   placeholder="Search by title or description..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300"
+                  className={`w-full pl-10 pr-4 py-3 border ${darkMode ? 'border-gray-600 bg-gray-700 text-white' : 'border-gray-300 bg-white text-gray-900'} rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 shadow-sm hover:shadow-md focus:shadow-lg`}
                 />
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                   <svg className="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -461,11 +255,11 @@ const CourseTree = ({ onLectureSelect, userProgress }) => {
 
             {/* Category Filter */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Category</label>
+              <label className={`block text-sm font-medium ${darkMode ? 'text-gray-300' : 'text-gray-700'} mb-2`}>Category</label>
               <select
                 value={selectedCategory}
                 onChange={(e) => setSelectedCategory(e.target.value)}
-                className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300"
+                  className={`w-full px-4 py-3 border ${darkMode ? 'border-gray-600 bg-gray-700 text-white' : 'border-gray-300 bg-white text-gray-900'} rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 shadow-sm hover:shadow-md focus:shadow-lg`}
               >
                 {categories.map(category => (
                   <option key={category} value={category}>{category}</option>
@@ -475,11 +269,11 @@ const CourseTree = ({ onLectureSelect, userProgress }) => {
 
             {/* Difficulty Filter */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Difficulty</label>
+              <label className={`block text-sm font-medium ${darkMode ? 'text-gray-300' : 'text-gray-700'} mb-2`}>Difficulty</label>
               <select
                 value={selectedDifficulty}
                 onChange={(e) => setSelectedDifficulty(e.target.value)}
-                className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300"
+                  className={`w-full px-4 py-3 border ${darkMode ? 'border-gray-600 bg-gray-700 text-white' : 'border-gray-300 bg-white text-gray-900'} rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 shadow-sm hover:shadow-md focus:shadow-lg`}
               >
                 {difficulties.map(difficulty => (
                   <option key={difficulty} value={difficulty}>{difficulty}</option>
@@ -490,7 +284,7 @@ const CourseTree = ({ onLectureSelect, userProgress }) => {
 
           {/* Sort Options */}
           <div className="mt-4 flex flex-wrap items-center gap-4">
-            <span className="text-sm font-medium text-gray-700">Sort by:</span>
+            <span className={`text-sm font-medium ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>Sort by:</span>
             <div className="flex flex-wrap gap-2">
               {[
                 { value: 'order', label: 'Default Order' },
@@ -502,10 +296,12 @@ const CourseTree = ({ onLectureSelect, userProgress }) => {
                 <button
                   key={option.value}
                   onClick={() => setSortBy(option.value)}
-                  className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 ${
+                  className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-300 transform hover:scale-105 ${
                     sortBy === option.value
                       ? 'bg-blue-500 text-white shadow-lg'
-                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                      : darkMode 
+                        ? 'bg-gray-700 text-gray-300 hover:bg-gray-600 hover:shadow-md'
+                        : 'bg-gray-100 text-gray-700 hover:bg-gray-200 hover:shadow-md'
                   }`}
                 >
                   {option.label}
@@ -515,8 +311,8 @@ const CourseTree = ({ onLectureSelect, userProgress }) => {
           </div>
 
           {/* Results Count */}
-          <div className="mt-4 text-sm text-gray-600">
-            Showing {filteredLectures.length} of {courseData.lectures.length} lectures
+          <div className={`mt-4 text-sm ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>
+            Showing {filteredLectures.length} of {allLectures.length} lectures
           </div>
         </div>
       </div>
@@ -536,122 +332,124 @@ const CourseTree = ({ onLectureSelect, userProgress }) => {
                     isUnlocked
                       ? 'border-blue-300 hover:border-blue-500 hover:shadow-2xl hover:shadow-blue-500/25'
                       : 'border-gray-300 cursor-not-allowed opacity-60'
-                  } ${status === 'completed' ? 'bg-gradient-to-br from-green-50 to-emerald-50 border-green-300 shadow-lg shadow-green-500/20' : 'bg-white/90 backdrop-blur-sm'}`}
+                  } ${status === 'completed' ? 'bg-gradient-to-br from-green-50 to-emerald-50 border-green-300 shadow-lg shadow-green-500/20' : darkMode ? 'bg-gray-800/90 backdrop-blur-sm' : 'bg-white/90 backdrop-blur-sm'} relative overflow-hidden`}
                   onClick={() => isUnlocked && onLectureSelect(lecture)}
                   style={{ animationDelay: `${index * 100}ms` }}
                 >
-                      {/* Status Indicator */}
-                      <div className={`absolute -top-2 -right-2 w-8 h-8 rounded-full ${getStatusColor(status)} flex items-center justify-center text-white text-xs shadow-lg transition-all duration-300 group-hover:scale-110 ${
-                        status === 'completed' ? 'animate-pulse-glow' : ''
-                      }`}>
-                        {getStatusIcon(status)}
+                  {/* Subtle shimmer effect */}
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-out"></div>
+                  {/* Status Indicator */}
+                  <div className={`absolute -top-2 -right-2 w-8 h-8 rounded-full ${getStatusColor(status)} flex items-center justify-center text-white text-xs shadow-lg transition-all duration-300 group-hover:scale-110 ${
+                    status === 'completed' ? 'animate-pulse-glow' : ''
+                  }`}>
+                    {getStatusIcon(status)}
+                  </div>
+                  
+                  {/* Category Badge */}
+                  <div className={`inline-block px-3 py-1 rounded-full text-xs font-medium mb-2 ${getCategoryColor(lecture.category)} shadow-sm transition-all duration-300 group-hover:scale-105`}>
+                    {lecture.category}
+                  </div>
+                  
+                  <h3 className={`font-bold ${darkMode ? 'text-white' : 'text-gray-900'} mb-2 text-lg group-hover:text-blue-600 transition-colors duration-300`}>
+                    {lecture.title}
+                  </h3>
+                  <p className={`text-xs ${darkMode ? 'text-gray-300' : 'text-gray-600'} mb-3 leading-relaxed ${darkMode ? 'group-hover:text-gray-200' : 'group-hover:text-gray-700'} transition-colors duration-300`}>
+                    {lecture.description}
+                  </p>
+                  
+                  <div className="flex justify-between items-center mb-3">
+                    <div className={`flex items-center text-xs ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>
+                      <svg className="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                      {lecture.duration}
+                    </div>
+                    <span className={`px-2 py-1 rounded-full text-xs font-medium ${getDifficultyColor(lecture.difficulty)} shadow-sm`}>
+                      {lecture.difficulty}
+                    </span>
+                  </div>
+                  
+                  {/* Course Stats */}
+                  <div className="flex justify-center mb-3">
+                    <div className={`flex items-center justify-center space-x-3 text-xs ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>
+                      <div className="flex items-center">
+                        <div className="w-2 h-2 bg-green-500 rounded-full mr-1"></div>
+                        <span>{courseData.totalLectures} Lectures</span>
                       </div>
-                      
-                      {/* Category Badge */}
-                      <div className={`inline-block px-3 py-1 rounded-full text-xs font-medium mb-2 ${getCategoryColor(lecture.category)} shadow-sm transition-all duration-300 group-hover:scale-105`}>
-                        {lecture.category}
+                      <div className="flex items-center">
+                        <div className="w-2 h-2 bg-blue-500 rounded-full mr-1"></div>
+                        <span>{Object.keys(courseData.categories).length} Categories</span>
                       </div>
-                      
-                      <h3 className="font-bold text-gray-900 mb-2 text-lg group-hover:text-blue-600 transition-colors duration-300">
-                        {lecture.title}
-                      </h3>
-                      <p className="text-xs text-gray-600 mb-3 leading-relaxed group-hover:text-gray-700 transition-colors duration-300">
-                        {lecture.description}
-                      </p>
-                      
-                      <div className="flex justify-between items-center mb-3">
-                        <div className="flex items-center text-xs text-gray-500">
-                          <svg className="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                          </svg>
-                          {lecture.duration}
-                        </div>
-                        <span className={`px-2 py-1 rounded-full text-xs font-medium ${getDifficultyColor(lecture.difficulty)} shadow-sm`}>
-                          {lecture.difficulty}
-                        </span>
-                      </div>
-                      
-                      {/* Course Stats */}
-                      <div className="flex justify-center mb-3">
-                        <div className="flex items-center justify-center space-x-3 text-xs text-gray-500">
-                          <div className="flex items-center">
-                            <div className="w-2 h-2 bg-green-500 rounded-full mr-1"></div>
-                            <span>18 Lectures</span>
-                          </div>
-                          <div className="flex items-center">
-                            <div className="w-2 h-2 bg-blue-500 rounded-full mr-1"></div>
-                            <span>6 Categories</span>
-                          </div>
-                          <div className="flex items-center">
-                            <div className="w-2 h-2 bg-purple-500 rounded-full mr-1"></div>
-                            <span>Sequential</span>
-                          </div>
-                        </div>
-                      </div>
-                      
-                      <div className="flex justify-center">
-                        <span className={`px-4 py-2 rounded-xl text-xs font-medium transition-all duration-300 transform group-hover:scale-105 ${
-                          status === 'completed' ? 'bg-gradient-to-r from-green-400 to-emerald-500 text-white shadow-lg shadow-green-500/25' :
-                          status === 'unlocked' ? 'bg-gradient-to-r from-blue-500 to-indigo-600 text-white shadow-lg shadow-blue-500/25 hover:shadow-xl hover:shadow-blue-500/40' :
-                          'bg-gray-100 text-gray-500'
-                        }`}>
-                          {status === 'completed' ? '✅ Completed' : 
-                           status === 'unlocked' ? '🚀 Start Learning' : 
-                           '🔒 Locked'}
-                        </span>
+                      <div className="flex items-center">
+                        <div className="w-2 h-2 bg-purple-500 rounded-full mr-1"></div>
+                        <span>Sequential</span>
                       </div>
                     </div>
-                    
-                    {/* Connection Indicator */}
-                    {connectionStatus && connectionStatus !== 'disconnected' && (
-                      <div className="flex justify-center mt-3">
-                        <div className={`w-6 h-6 rounded-full flex items-center justify-center text-white text-xs font-bold shadow-md ${
-                          connectionStatus === 'connected' ? 'bg-green-500 animate-pulse' :
-                          connectionStatus === 'partial' ? 'bg-yellow-500' :
-                          'bg-red-400'
-                        }`}>
-                          {connectionStatus === 'connected' ? '✓' : 
-                           connectionStatus === 'partial' ? '⏳' : 
-                           ''}
-                        </div>
-                      </div>
-                    )}
-                    
-                    {/* Connection Line to Next Card */}
-                    {connectionStatus === 'connected' && index < courseData.lectures.length - 1 && (
-                      <div className="absolute top-1/2 -right-3 w-6 h-0.5 bg-green-500 transform -translate-y-1/2 z-10"></div>
-                    )}
                   </div>
-              );
-            })}
+                  
+                  <div className="flex justify-center">
+                    <span className={`px-4 py-2 rounded-xl text-xs font-medium transition-all duration-300 transform group-hover:scale-105 ${
+                      status === 'completed' ? 'bg-gradient-to-r from-green-400 to-emerald-500 text-white shadow-lg shadow-green-500/25' :
+                      status === 'unlocked' ? 'bg-gradient-to-r from-blue-500 to-indigo-600 text-white shadow-lg shadow-blue-500/25 hover:shadow-xl hover:shadow-blue-500/40' :
+                      'bg-gray-100 text-gray-500'
+                    }`}>
+                      {status === 'completed' ? '✅ Completed' : 
+                       status === 'unlocked' ? '🚀 Start Learning' : 
+                       '🔒 Locked'}
+                    </span>
+                  </div>
+                  
+                  {/* Connection Indicator */}
+                  {connectionStatus && connectionStatus !== 'disconnected' && (
+                    <div className="flex justify-center mt-3">
+                      <div className={`w-6 h-6 rounded-full flex items-center justify-center text-white text-xs font-bold shadow-md ${
+                        connectionStatus === 'connected' ? 'bg-green-500 animate-pulse' :
+                        connectionStatus === 'partial' ? 'bg-yellow-500' :
+                        'bg-red-400'
+                      }`}>
+                        {connectionStatus === 'connected' ? '✓' : 
+                         connectionStatus === 'partial' ? '⏳' : 
+                         ''}
+                      </div>
+                    </div>
+                  )}
+                  
+                  {/* Connection Line to Next Card */}
+                  {connectionStatus === 'connected' && index < filteredLectures.length - 1 && (
+                    <div className="absolute top-1/2 -right-3 w-6 h-0.5 bg-green-500 transform -translate-y-1/2 z-10"></div>
+                  )}
+                </div>
+              </div>
+            );
+          })}
         </div>
       </div>
       
       {/* Progress Summary */}
-      <div className="mt-6 p-4 bg-gradient-to-r from-blue-50 via-indigo-50 to-purple-50 rounded-2xl border border-blue-200/50 shadow-lg">
+      <div className={`mt-6 p-4 ${darkMode ? 'bg-gradient-to-r from-gray-800 via-gray-700 to-gray-800 border-gray-600/50' : 'bg-gradient-to-r from-blue-50 via-indigo-50 to-purple-50 border-blue-200/50'} rounded-2xl border shadow-lg`}>
         <div className="text-center mb-4">
-          <h3 className="text-xl font-bold text-gray-800 mb-1">Learning Progress</h3>
-          <p className="text-sm text-gray-600">Track your journey through the complete web development course</p>
+          <h3 className={`text-xl font-bold ${darkMode ? 'text-white' : 'text-gray-800'} mb-1`}>Learning Progress</h3>
+          <p className={`text-sm ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>Track your journey through the complete web development course</p>
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-          <div className="text-center p-3 bg-white/70 rounded-xl shadow-sm">
+          <div className={`text-center p-3 ${darkMode ? 'bg-gray-700/70' : 'bg-white/70'} rounded-xl shadow-sm`}>
             <div className="text-2xl font-bold text-green-600 mb-1">
               {Object.values(userProgress).filter(p => p.completed).length}
             </div>
-            <div className="text-xs text-gray-600">Completed</div>
+            <div className={`text-xs ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>Completed</div>
           </div>
-          <div className="text-center p-3 bg-white/70 rounded-xl shadow-sm">
+          <div className={`text-center p-3 ${darkMode ? 'bg-gray-700/70' : 'bg-white/70'} rounded-xl shadow-sm`}>
             <div className="text-2xl font-bold text-blue-600 mb-1">
-              {courseData.lectures.length}
+              {allLectures.length}
             </div>
-            <div className="text-xs text-gray-600">Total Lectures</div>
+            <div className={`text-xs ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>Total Lectures</div>
           </div>
-          <div className="text-center p-3 bg-white/70 rounded-xl shadow-sm">
+          <div className={`text-center p-3 ${darkMode ? 'bg-gray-700/70' : 'bg-white/70'} rounded-xl shadow-sm`}>
             <div className="text-2xl font-bold text-purple-600 mb-1">
-              {Math.round((Object.values(userProgress).filter(p => p.completed).length / courseData.lectures.length) * 100)}%
+              {Math.round((Object.values(userProgress).filter(p => p.completed).length / allLectures.length) * 100)}%
             </div>
-            <div className="text-xs text-gray-600">Progress</div>
+            <div className={`text-xs ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>Progress</div>
           </div>
         </div>
         
@@ -659,7 +457,7 @@ const CourseTree = ({ onLectureSelect, userProgress }) => {
           <div 
             className="bg-gradient-to-r from-green-400 via-blue-500 to-purple-600 h-2 rounded-full transition-all duration-1000 ease-out shadow-lg"
             style={{ 
-              width: `${(Object.values(userProgress).filter(p => p.completed).length / courseData.lectures.length) * 100}%` 
+              width: `${(Object.values(userProgress).filter(p => p.completed).length / allLectures.length) * 100}%` 
             }}
           ></div>
         </div>
@@ -667,8 +465,8 @@ const CourseTree = ({ onLectureSelect, userProgress }) => {
         <div className="flex justify-center mt-3">
           <div className="text-xs text-gray-500">
             {Object.values(userProgress).filter(p => p.completed).length === 0 && "Start your learning journey!"}
-            {Object.values(userProgress).filter(p => p.completed).length > 0 && Object.values(userProgress).filter(p => p.completed).length < courseData.lectures.length && "Keep up the great work! 🚀"}
-            {Object.values(userProgress).filter(p => p.completed).length === courseData.lectures.length && "Congratulations! You've completed the entire course! 🎉"}
+            {Object.values(userProgress).filter(p => p.completed).length > 0 && Object.values(userProgress).filter(p => p.completed).length < allLectures.length && "Keep up the great work! 🚀"}
+            {Object.values(userProgress).filter(p => p.completed).length === allLectures.length && "Congratulations! You've completed the entire course! 🎉"}
           </div>
         </div>
       </div>
