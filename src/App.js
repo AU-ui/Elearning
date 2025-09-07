@@ -1,18 +1,29 @@
 import React, { useState } from 'react';
 import CourseTree from './components/CourseTree';
+import TreeCourseTree from './components/TreeCourseTree';
 import LecturePlayer from './components/LecturePlayer';
 import ProgressDashboard from './components/ProgressDashboard';
+import LecturePreview from './components/LecturePreview';
+import NotesSystem from './components/NotesSystem';
+import AchievementSystem from './components/AchievementSystem';
+import ProgressAnalytics from './components/ProgressAnalytics';
 
 function App() {
   const [activeTab, setActiveTab] = useState('course-tree');
   const [selectedLecture, setSelectedLecture] = useState(null);
   const [userProgress, setUserProgress] = useState({});
   const [darkMode, setDarkMode] = useState(false);
+  const [previewLecture, setPreviewLecture] = useState(null);
+  const [showPreview, setShowPreview] = useState(false);
 
   const tabs = [
     { id: 'course-tree', label: 'Course Tree', icon: '🌳' },
+    { id: 'tree-view', label: 'Tree View', icon: '🌲' },
     { id: 'lectures', label: 'Lectures', icon: '📚' },
-    { id: 'progress', label: 'Progress', icon: '📊' }
+    { id: 'progress', label: 'Progress', icon: '📊' },
+    { id: 'analytics', label: 'Analytics', icon: '📈' },
+    { id: 'achievements', label: 'Achievements', icon: '🏆' },
+    { id: 'notes', label: 'Notes', icon: '📝' }
   ];
 
   const handleLectureSelect = (lecture) => {
@@ -24,6 +35,22 @@ function App() {
     setUserProgress(prev => ({
       ...prev,
       [lectureId]: { completed: true, completedAt: new Date() }
+    }));
+  };
+
+  const handlePreviewLecture = (lecture) => {
+    setPreviewLecture(lecture);
+    setShowPreview(true);
+  };
+
+  const handleSaveNotes = (lectureId, notes, savedNotes) => {
+    setUserProgress(prev => ({
+      ...prev,
+      [lectureId]: { 
+        ...prev[lectureId], 
+        notes: notes,
+        savedNotes: savedNotes
+      }
     }));
   };
 
@@ -108,8 +135,12 @@ function App() {
                         activeTab === tab.id ? 'text-white/80' : `${darkMode ? 'text-gray-400' : 'text-gray-500'}`
                       }`}>
                         {tab.id === 'course-tree' && 'Explore learning path'}
+                        {tab.id === 'tree-view' && 'Interactive skill tree'}
                         {tab.id === 'lectures' && 'Watch video lessons'}
                         {tab.id === 'progress' && 'Track your progress'}
+                        {tab.id === 'analytics' && 'Detailed insights'}
+                        {tab.id === 'achievements' && 'Unlock badges'}
+                        {tab.id === 'notes' && 'Take notes'}
                       </p>
                     </div>
                     {activeTab === tab.id && (
@@ -151,6 +182,13 @@ function App() {
                 darkMode={darkMode}
               />
             )}
+            {activeTab === 'tree-view' && (
+              <TreeCourseTree 
+                onLectureSelect={handleLectureSelect}
+                userProgress={userProgress}
+                darkMode={darkMode}
+              />
+            )}
             {activeTab === 'lectures' && (
               <LecturePlayer 
                 lecture={selectedLecture}
@@ -160,9 +198,39 @@ function App() {
             {activeTab === 'progress' && (
               <ProgressDashboard userProgress={userProgress} />
             )}
+            {activeTab === 'analytics' && (
+              <ProgressAnalytics 
+                userProgress={userProgress}
+                allLectures={[]} // This would come from the tree data
+                darkMode={darkMode}
+              />
+            )}
+            {activeTab === 'achievements' && (
+              <AchievementSystem 
+                userProgress={userProgress}
+                allLectures={[]} // This would come from the tree data
+                darkMode={darkMode}
+              />
+            )}
+            {activeTab === 'notes' && (
+              <NotesSystem 
+                lecture={selectedLecture}
+                userProgress={userProgress}
+                onSaveNotes={handleSaveNotes}
+                darkMode={darkMode}
+              />
+            )}
           </div>
         </div>
       </div>
+
+      {/* Lecture Preview Modal */}
+      <LecturePreview
+        lecture={previewLecture}
+        isVisible={showPreview}
+        onClose={() => setShowPreview(false)}
+        darkMode={darkMode}
+      />
     </div>
   );
 }
