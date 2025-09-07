@@ -106,7 +106,7 @@ const CleanTreeView = ({ onLectureSelect, userProgress, darkMode, selectedLectur
   // Render family tree connections
   const renderTreeConnections = () => {
     return (
-      <svg className="absolute inset-0 w-full h-full pointer-events-none" style={{ zIndex: 1 }}>
+      <svg className="absolute inset-0 w-full h-full pointer-events-none" style={{ zIndex: 50 }}>
         {allNodes.map(node => {
           if (node.children.length === 0) return null;
           
@@ -176,7 +176,7 @@ const CleanTreeView = ({ onLectureSelect, userProgress, darkMode, selectedLectur
   };
 
   return (
-    <div className={`${darkMode ? 'bg-gray-900/80 text-white' : 'bg-white/80 text-gray-900'} backdrop-blur-md rounded-2xl shadow-2xl border ${darkMode ? 'border-gray-700/20' : 'border-white/20'} p-8 animate-slide-in-up relative overflow-hidden`}>
+    <div className={`${darkMode ? 'bg-gray-900/80 text-white' : 'bg-white/80 text-gray-900'} backdrop-blur-md rounded-2xl shadow-2xl border ${darkMode ? 'border-gray-700/20' : 'border-white/20'} p-8 animate-slide-in-up relative overflow-visible`} style={{ zIndex: 10 }}>
       {/* Subtle gradient overlay */}
       <div className={`absolute inset-0 ${darkMode ? 'bg-gradient-to-br from-gray-800/20 to-gray-900/20' : 'bg-gradient-to-br from-blue-50/30 to-purple-50/30'} pointer-events-none`}></div>
       
@@ -272,13 +272,13 @@ const CleanTreeView = ({ onLectureSelect, userProgress, darkMode, selectedLectur
       </div>
 
       {/* Family Tree Layout */}
-      <div className="relative z-10 mt-6">
-        <div className="relative min-h-screen overflow-x-auto">
+      <div className="relative z-50 mt-6">
+        <div className="relative min-h-screen overflow-visible">
           {/* Tree Connections */}
           {renderTreeConnections()}
           
           {/* Family Tree Nodes */}
-          <div className="relative" style={{ zIndex: 2, minWidth: '1200px', minHeight: '800px' }}>
+            <div className="relative" style={{ zIndex: 100, minWidth: '1200px', minHeight: '800px' }}>
             {filteredNodes.map((node, index) => {
               const status = getNodeStatus(node);
               const isUnlocked = status !== 'locked';
@@ -290,7 +290,8 @@ const CleanTreeView = ({ onLectureSelect, userProgress, darkMode, selectedLectur
                   style={{
                     left: `${node.position.x}%`,
                     top: `${node.position.y}%`,
-                    animationDelay: `${index * 100}ms`
+                    animationDelay: `${index * 100}ms`,
+                    zIndex: 100 + index
                   }}
                 >
                   {/* Family Tree Card */}
