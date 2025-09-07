@@ -295,13 +295,21 @@ const CleanTreeView = ({ onLectureSelect, userProgress, darkMode, selectedLectur
                 >
                   {/* Family Tree Card */}
                   <div
-                    className={`group relative w-56 p-4 rounded-xl border-2 cursor-pointer transition-all duration-500 transform hover:scale-105 hover:-translate-y-2 ${
+                    className={`group relative rounded-xl border-2 cursor-pointer transition-all duration-500 transform ${
                       selectedLecture && selectedLecture.id === node.id
-                        ? 'border-blue-500 bg-gradient-to-br from-blue-50 to-indigo-50 shadow-lg shadow-blue-500/30'
+                        ? 'w-64 p-5 scale-110 -translate-y-3 border-blue-600 bg-gradient-to-br from-blue-100 to-blue-200 shadow-xl shadow-blue-600/50'
                         : isUnlocked
-                          ? 'border-gray-300 hover:border-gray-400 hover:shadow-2xl hover:shadow-gray-500/25'
-                          : 'border-gray-300 cursor-not-allowed opacity-60'
-                    } ${status === 'completed' ? 'bg-gradient-to-br from-green-50 to-emerald-50 border-green-300 shadow-lg shadow-green-500/20' : darkMode ? 'bg-gray-800/90 backdrop-blur-sm' : 'bg-white/90 backdrop-blur-sm'} relative overflow-hidden`}
+                          ? 'w-56 p-4 hover:scale-105 hover:-translate-y-2 border-gray-200 hover:border-gray-300 hover:shadow-2xl hover:shadow-gray-500/25'
+                          : 'w-56 p-4 border-gray-300 cursor-not-allowed opacity-60'
+                    } ${
+                      status === 'completed' && !(selectedLecture && selectedLecture.id === node.id)
+                        ? 'bg-gradient-to-br from-green-50 to-emerald-50 border-green-300 shadow-lg shadow-green-500/20'
+                        : darkMode && !(selectedLecture && selectedLecture.id === node.id)
+                          ? 'bg-gray-800/90 backdrop-blur-sm'
+                          : !(selectedLecture && selectedLecture.id === node.id)
+                            ? 'bg-white/90 backdrop-blur-sm'
+                            : ''
+                    } relative overflow-hidden`}
                     onClick={() => isUnlocked && onLectureSelect(node)}
                   >
                     {/* Subtle shimmer effect */}
