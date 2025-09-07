@@ -64,7 +64,7 @@ function App() {
       )}
 
       {/* Header */}
-      <header className={`relative ${darkMode ? 'bg-gray-800/80 border-gray-700/20' : 'bg-white/80 border-white/20'} backdrop-blur-md shadow-lg border-b`}>
+      <header className={`relative z-10 ${darkMode ? 'bg-gray-800/80 border-gray-700/20' : 'bg-white/80 border-white/20'} backdrop-blur-md shadow-lg border-b`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-6">
             <div className="flex items-center space-x-4">
@@ -99,7 +99,7 @@ function App() {
         </div>
       </header>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
         <div className="flex gap-4">
           {/* Vertical Tabs Sidebar */}
           <div className="w-64 flex-shrink-0">
