@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import CourseTree from './components/CourseTree';
-import TreeCourseTree from './components/TreeCourseTree';
+import CleanTreeView from './components/CleanTreeView';
 import LecturePlayer from './components/LecturePlayer';
 import ProgressDashboard from './components/ProgressDashboard';
 import LecturePreview from './components/LecturePreview';
@@ -9,7 +8,7 @@ import AchievementSystem from './components/AchievementSystem';
 import ProgressAnalytics from './components/ProgressAnalytics';
 
 function App() {
-  const [activeTab, setActiveTab] = useState('course-tree');
+  const [activeTab, setActiveTab] = useState('family-tree');
   const [selectedLecture, setSelectedLecture] = useState(null);
   const [userProgress, setUserProgress] = useState({});
   const [darkMode, setDarkMode] = useState(false);
@@ -17,8 +16,7 @@ function App() {
   const [showPreview, setShowPreview] = useState(false);
 
   const tabs = [
-    { id: 'course-tree', label: 'Course Tree', icon: '🌳' },
-    { id: 'tree-view', label: 'Tree View', icon: '🌲' },
+    { id: 'family-tree', label: 'Learning Tree', icon: '🌳' },
     { id: 'lectures', label: 'Lectures', icon: '📚' },
     { id: 'progress', label: 'Progress', icon: '📊' },
     { id: 'analytics', label: 'Analytics', icon: '📈' },
@@ -134,8 +132,7 @@ function App() {
                       <p className={`text-xs mt-1 ${
                         activeTab === tab.id ? 'text-white/80' : `${darkMode ? 'text-gray-400' : 'text-gray-500'}`
                       }`}>
-                        {tab.id === 'course-tree' && 'Explore learning path'}
-                        {tab.id === 'tree-view' && 'Interactive skill tree'}
+                        {tab.id === 'family-tree' && 'Family tree learning path'}
                         {tab.id === 'lectures' && 'Watch video lessons'}
                         {tab.id === 'progress' && 'Track your progress'}
                         {tab.id === 'analytics' && 'Detailed insights'}
@@ -175,15 +172,8 @@ function App() {
 
           {/* Main Content */}
           <div className="flex-1">
-            {activeTab === 'course-tree' && (
-              <CourseTree 
-                onLectureSelect={handleLectureSelect}
-                userProgress={userProgress}
-                darkMode={darkMode}
-              />
-            )}
-            {activeTab === 'tree-view' && (
-              <TreeCourseTree 
+            {activeTab === 'family-tree' && (
+              <CleanTreeView 
                 onLectureSelect={handleLectureSelect}
                 userProgress={userProgress}
                 darkMode={darkMode}

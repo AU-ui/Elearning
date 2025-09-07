@@ -18,7 +18,7 @@ export const treeCourseData = {
       duration: '1:09:34',
       prerequisites: [], // Root node
       children: ['html-basics', 'css-basics'], // Branches to HTML and CSS
-      position: { x: 50, y: 10 }, // Root level
+      position: { x: 50, y: 5 }, // Root level - center top
       difficulty: 'Beginner',
       category: 'Foundation',
       tags: ['introduction', 'fundamentals'],
@@ -39,7 +39,7 @@ export const treeCourseData = {
       duration: '2:30:00',
       prerequisites: ['intro-web-dev'],
       children: ['html-advanced', 'accessibility'],
-      position: { x: 25, y: 25 }, // Level 1 - Left branch
+      position: { x: 30, y: 20 }, // Level 1 - Left branch
       difficulty: 'Beginner',
       category: 'HTML',
       tags: ['html', 'semantic', 'structure'],
@@ -59,7 +59,7 @@ export const treeCourseData = {
       duration: '1:45:00',
       prerequisites: ['html-basics'],
       children: ['responsive-design'],
-      position: { x: 15, y: 40 }, // Level 2 - HTML branch
+      position: { x: 20, y: 35 }, // Level 2 - HTML branch
       difficulty: 'Intermediate',
       category: 'HTML',
       tags: ['html', 'advanced', 'best-practices'],
@@ -80,7 +80,7 @@ export const treeCourseData = {
       duration: '3:00:00',
       prerequisites: ['intro-web-dev'],
       children: ['css-advanced', 'responsive-design'],
-      position: { x: 75, y: 25 }, // Level 1 - Right branch
+      position: { x: 70, y: 20 }, // Level 1 - Right branch
       difficulty: 'Beginner',
       category: 'CSS',
       tags: ['css', 'styling', 'layout'],
@@ -100,7 +100,7 @@ export const treeCourseData = {
       duration: '2:15:00',
       prerequisites: ['css-basics'],
       children: ['css-animations', 'css-grid-flexbox'],
-      position: { x: 85, y: 40 }, // Level 2 - CSS branch
+      position: { x: 60, y: 35 }, // Level 2 - CSS branch
       difficulty: 'Intermediate',
       category: 'CSS',
       tags: ['css', 'advanced', 'modern'],
@@ -121,7 +121,7 @@ export const treeCourseData = {
       duration: '1:30:00',
       prerequisites: ['html-basics'],
       children: ['responsive-design'],
-      position: { x: 35, y: 40 }, // Level 2 - Accessibility branch
+      position: { x: 40, y: 35 }, // Level 2 - Accessibility branch
       difficulty: 'Intermediate',
       category: 'Accessibility',
       tags: ['accessibility', 'a11y', 'inclusive'],
@@ -142,7 +142,7 @@ export const treeCourseData = {
       duration: '2:00:00',
       prerequisites: ['html-advanced', 'css-advanced', 'accessibility'], // Multiple prerequisites
       children: ['javascript-basics', 'css-animations'],
-      position: { x: 50, y: 55 }, // Level 3 - Convergence point
+      position: { x: 50, y: 50 }, // Level 3 - Convergence point
       difficulty: 'Intermediate',
       category: 'Design',
       tags: ['responsive', 'mobile-first', 'design'],
@@ -163,7 +163,7 @@ export const treeCourseData = {
       duration: '1:45:00',
       prerequisites: ['css-advanced', 'responsive-design'],
       children: ['javascript-basics'],
-      position: { x: 75, y: 70 }, // Level 3 - CSS animations
+      position: { x: 80, y: 50 }, // Level 3 - CSS animations
       difficulty: 'Intermediate',
       category: 'CSS',
       tags: ['animations', 'transitions', 'interactions'],
@@ -183,7 +183,7 @@ export const treeCourseData = {
       duration: '2:30:00',
       prerequisites: ['css-advanced'],
       children: ['javascript-basics'],
-      position: { x: 95, y: 55 }, // Level 3 - CSS Grid/Flexbox
+      position: { x: 90, y: 50 }, // Level 3 - CSS Grid/Flexbox
       difficulty: 'Advanced',
       category: 'CSS',
       tags: ['grid', 'flexbox', 'layout'],
@@ -204,7 +204,7 @@ export const treeCourseData = {
       duration: '4:00:00',
       prerequisites: ['responsive-design', 'css-animations', 'css-grid-flexbox'], // Multiple paths lead here
       children: ['javascript-dom', 'javascript-async'],
-      position: { x: 50, y: 85 }, // Level 4 - JavaScript convergence
+      position: { x: 50, y: 65 }, // Level 4 - JavaScript convergence
       difficulty: 'Beginner',
       category: 'JavaScript',
       tags: ['javascript', 'programming', 'fundamentals'],
@@ -224,7 +224,7 @@ export const treeCourseData = {
       duration: '2:30:00',
       prerequisites: ['javascript-basics'],
       children: ['javascript-async', 'react-basics'],
-      position: { x: 25, y: 100 }, // Level 5 - JavaScript DOM
+      position: { x: 30, y: 80 }, // Level 5 - JavaScript DOM
       difficulty: 'Intermediate',
       category: 'JavaScript',
       tags: ['dom', 'manipulation', 'events'],
@@ -244,7 +244,7 @@ export const treeCourseData = {
       duration: '2:45:00',
       prerequisites: ['javascript-basics'],
       children: ['react-basics', 'node-basics'],
-      position: { x: 75, y: 100 }, // Level 5 - JavaScript Async
+      position: { x: 70, y: 80 }, // Level 5 - JavaScript Async
       difficulty: 'Advanced',
       category: 'JavaScript',
       tags: ['async', 'promises', 'apis'],
@@ -265,7 +265,7 @@ export const treeCourseData = {
       duration: '3:30:00',
       prerequisites: ['javascript-dom', 'javascript-async'], // Multiple paths
       children: ['react-advanced', 'react-hooks'],
-      position: { x: 50, y: 115 }, // Level 6 - React convergence
+      position: { x: 50, y: 95 }, // Level 6 - React convergence
       difficulty: 'Intermediate',
       category: 'React',
       tags: ['react', 'components', 'jsx'],
