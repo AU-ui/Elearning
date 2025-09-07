@@ -3,7 +3,7 @@ export const cleanTreeData = {
   id: 'web-dev-family-tree',
   title: 'Web Development Family Tree',
   description: 'Learn web development through a clear family tree structure',
-  totalLectures: 12,
+  totalLectures: 15,
   estimatedDuration: '25+ hours',
   difficulty: 'Beginner to Advanced',
   
@@ -219,7 +219,7 @@ export const cleanTreeData = {
       icon: '🟢'
     },
 
-    // LEVEL 7 (Generation 7) - Final convergence
+    // LEVEL 7 (Generation 7) - Final convergence with multiple leaf nodes
     'fullstack-project': {
       id: 'fullstack-project',
       title: 'Full-Stack Project',
@@ -227,7 +227,7 @@ export const cleanTreeData = {
       youtubeId: 'vQWlgd7hV4A',
       duration: '4:00:00',
       prerequisites: ['react-basics', 'node-basics'],
-      children: [],
+      children: ['deployment', 'testing', 'optimization'],
       level: 7,
       position: { x: 50, y: 65 },
       difficulty: 'Advanced',
@@ -235,6 +235,58 @@ export const cleanTreeData = {
       tags: ['fullstack', 'project'],
       objectives: ['Complete app', 'Deploy to production'],
       icon: '🎯'
+    },
+
+    // LEVEL 8 (Generation 8) - Final leaf nodes (cards at edges)
+    'deployment': {
+      id: 'deployment',
+      title: 'Deployment & DevOps',
+      description: 'Deploy your application to production',
+      youtubeId: 'vQWlgd7hV4A',
+      duration: '2:30:00',
+      prerequisites: ['fullstack-project'],
+      children: [],
+      level: 8,
+      position: { x: 30, y: 75 },
+      difficulty: 'Advanced',
+      category: 'DevOps',
+      tags: ['deployment', 'devops'],
+      objectives: ['Deploy to cloud', 'CI/CD pipeline'],
+      icon: '🚀'
+    },
+
+    'testing': {
+      id: 'testing',
+      title: 'Testing & Quality',
+      description: 'Write tests and ensure code quality',
+      youtubeId: 'vQWlgd7hV4A',
+      duration: '2:00:00',
+      prerequisites: ['fullstack-project'],
+      children: [],
+      level: 8,
+      position: { x: 50, y: 75 },
+      difficulty: 'Advanced',
+      category: 'Testing',
+      tags: ['testing', 'quality'],
+      objectives: ['Unit tests', 'Integration tests'],
+      icon: '🧪'
+    },
+
+    'optimization': {
+      id: 'optimization',
+      title: 'Performance Optimization',
+      description: 'Optimize your application for speed',
+      youtubeId: 'vQWlgd7hV4A',
+      duration: '2:15:00',
+      prerequisites: ['fullstack-project'],
+      children: [],
+      level: 8,
+      position: { x: 70, y: 75 },
+      difficulty: 'Advanced',
+      category: 'Performance',
+      tags: ['optimization', 'performance'],
+      objectives: ['Speed optimization', 'SEO'],
+      icon: '⚡'
     }
   },
 
