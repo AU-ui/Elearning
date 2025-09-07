@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { cleanTreeData } from '../data/cleanTreeData';
 
-const CleanTreeView = ({ onLectureSelect, userProgress, darkMode }) => {
+const CleanTreeView = ({ onLectureSelect, userProgress, darkMode, selectedLecture }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedLevel, setSelectedLevel] = useState('All');
   const [selectedCategory, setSelectedCategory] = useState('All');
@@ -103,7 +103,7 @@ const CleanTreeView = ({ onLectureSelect, userProgress, darkMode }) => {
     return ['All', ...cats];
   }, [allNodes]);
 
-  // Render tree connections
+  // Render family tree connections
   const renderTreeConnections = () => {
     return (
       <svg className="absolute inset-0 w-full h-full pointer-events-none" style={{ zIndex: 1 }}>
@@ -115,15 +115,16 @@ const CleanTreeView = ({ onLectureSelect, userProgress, darkMode }) => {
             if (!child) return null;
 
             const startX = node.position.x;
-            const startY = node.position.y + 6; // Start from bottom of parent card
+            const startY = node.position.y + 8; // Start from bottom of parent card
             const endX = child.position.x;
-            const endY = child.position.y - 6; // End at top of child card
+            const endY = child.position.y - 8; // End at top of child card
 
             const isCompleted = isNodeCompleted(node.id);
             const isChildUnlocked = isNodeUnlocked(child);
 
-            // Create clean family tree connections
+            // Create family tree connections with arrows
             const midY = startY + (endY - startY) / 2;
+            const connectionColor = isCompleted && isChildUnlocked ? '#10b981' : '#dc2626'; // Green or red like in the image
 
             return (
               <g key={`${node.id}-${childId}`}>
@@ -133,9 +134,8 @@ const CleanTreeView = ({ onLectureSelect, userProgress, darkMode }) => {
                   y1={`${startY}%`}
                   x2={`${startX}%`}
                   y2={`${midY}%`}
-                  stroke={isCompleted && isChildUnlocked ? '#10b981' : '#6b7280'}
-                  strokeWidth="3"
-                  strokeDasharray={isCompleted && isChildUnlocked ? '0' : '8,4'}
+                  stroke={connectionColor}
+                  strokeWidth="4"
                   className="transition-all duration-500"
                 />
                 
@@ -145,9 +145,8 @@ const CleanTreeView = ({ onLectureSelect, userProgress, darkMode }) => {
                   y1={`${midY}%`}
                   x2={`${endX}%`}
                   y2={`${midY}%`}
-                  stroke={isCompleted && isChildUnlocked ? '#10b981' : '#6b7280'}
-                  strokeWidth="3"
-                  strokeDasharray={isCompleted && isChildUnlocked ? '0' : '8,4'}
+                  stroke={connectionColor}
+                  strokeWidth="4"
                   className="transition-all duration-500"
                 />
                 
@@ -157,9 +156,15 @@ const CleanTreeView = ({ onLectureSelect, userProgress, darkMode }) => {
                   y1={`${midY}%`}
                   x2={`${endX}%`}
                   y2={`${endY}%`}
-                  stroke={isCompleted && isChildUnlocked ? '#10b981' : '#6b7280'}
-                  strokeWidth="3"
-                  strokeDasharray={isCompleted && isChildUnlocked ? '0' : '8,4'}
+                  stroke={connectionColor}
+                  strokeWidth="4"
+                  className="transition-all duration-500"
+                />
+                
+                {/* Arrow pointing down to child */}
+                <polygon
+                  points={`${endX}%,${endY - 2}% ${endX - 1}%,${endY + 1}% ${endX + 1}%,${endY + 1}%`}
+                  fill={connectionColor}
                   className="transition-all duration-500"
                 />
               </g>
@@ -266,68 +271,80 @@ const CleanTreeView = ({ onLectureSelect, userProgress, darkMode }) => {
         </div>
       </div>
 
-      {/* Grid Layout View */}
+      {/* Family Tree Layout */}
       <div className="ml-12 relative z-10">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {filteredNodes.map((node, index) => {
-            const status = getNodeStatus(node);
-            const isUnlocked = status !== 'locked';
-            
-            return (
-              <div
-                key={node.id}
-                className="transform transition-all duration-500 hover:scale-105 hover:-translate-y-2"
-                style={{ animationDelay: `${index * 100}ms` }}
-              >
-                {/* Show full cards in grid layout */}
+        <div className="relative min-h-screen overflow-x-auto">
+          {/* Tree Connections */}
+          {renderTreeConnections()}
+          
+          {/* Family Tree Nodes */}
+          <div className="relative" style={{ zIndex: 2, minWidth: '1200px', minHeight: '800px' }}>
+            {filteredNodes.map((node, index) => {
+              const status = getNodeStatus(node);
+              const isUnlocked = status !== 'locked';
+              
+              return (
                 <div
-                  className={`group relative w-full p-4 rounded-xl border-2 cursor-pointer transition-all duration-500 ${
-                    isUnlocked
-                      ? 'border-blue-300 hover:border-blue-500 hover:shadow-2xl hover:shadow-blue-500/25'
-                      : 'border-gray-300 cursor-not-allowed opacity-60'
-                  } ${status === 'completed' ? 'bg-gradient-to-br from-green-50 to-emerald-50 border-green-300 shadow-lg shadow-green-500/20' : darkMode ? 'bg-gray-800/90 backdrop-blur-sm' : 'bg-white/90 backdrop-blur-sm'} relative overflow-hidden`}
-                  onClick={() => isUnlocked && onLectureSelect(node)}
+                  key={node.id}
+                  className="absolute transform -translate-x-1/2 -translate-y-1/2"
+                  style={{
+                    left: `${node.position.x}%`,
+                    top: `${node.position.y}%`,
+                    animationDelay: `${index * 100}ms`
+                  }}
                 >
-                  {/* Subtle shimmer effect */}
-                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-out"></div>
-                  
-                  {/* Status Indicator */}
-                  <div className={`absolute -top-2 -right-2 w-7 h-7 rounded-full ${getStatusColor(status)} flex items-center justify-center text-white text-xs shadow-lg transition-all duration-300 group-hover:scale-110 ${
-                    status === 'completed' ? 'animate-pulse-glow' : ''
-                  }`}>
-                    {getStatusIcon(status)}
-                  </div>
-                  
-                  {/* Level Badge */}
-                  <div className={`inline-block px-2 py-1 rounded-full text-xs font-medium mb-2 ${darkMode ? 'bg-gray-700 text-gray-300' : 'bg-gray-200 text-gray-700'}`}>
-                    Level {node.level}
-                  </div>
-                  
-                  {/* Category Badge */}
-                  <div className={`inline-block px-2 py-1 rounded-full text-xs font-medium mb-2 ml-1 ${getCategoryColor(node.category)} shadow-sm transition-all duration-300 group-hover:scale-105`}>
-                    {node.category}
-                  </div>
-                  
-                  <h3 className={`font-bold ${darkMode ? 'text-white' : 'text-gray-900'} mb-2 text-sm group-hover:text-blue-600 transition-colors duration-300`}>
-                    {node.title}
-                  </h3>
-                  <p className={`text-xs ${darkMode ? 'text-gray-300' : 'text-gray-600'} mb-3 leading-relaxed ${darkMode ? 'group-hover:text-gray-200' : 'group-hover:text-gray-700'} transition-colors duration-300`}>
-                    {node.description}
-                  </p>
-                  
-                  {/* Node Stats */}
-                  <div className="flex items-center justify-between text-xs">
-                    <span className={`px-2 py-1 rounded-full ${getDifficultyColor(node.difficulty)}`}>
-                      {node.difficulty}
-                    </span>
-                    <span className={`${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>
-                      {node.duration}
-                    </span>
+                  {/* Family Tree Card */}
+                  <div
+                    className={`group relative w-56 p-4 rounded-xl border-2 cursor-pointer transition-all duration-500 transform hover:scale-105 hover:-translate-y-2 ${
+                      selectedLecture && selectedLecture.id === node.id
+                        ? 'border-pink-400 bg-gradient-to-br from-pink-50 to-rose-50 shadow-lg shadow-pink-500/30'
+                        : isUnlocked
+                          ? 'border-blue-300 hover:border-blue-500 hover:shadow-2xl hover:shadow-blue-500/25'
+                          : 'border-gray-300 cursor-not-allowed opacity-60'
+                    } ${status === 'completed' ? 'bg-gradient-to-br from-green-50 to-emerald-50 border-green-300 shadow-lg shadow-green-500/20' : darkMode ? 'bg-gray-800/90 backdrop-blur-sm' : 'bg-white/90 backdrop-blur-sm'} relative overflow-hidden`}
+                    onClick={() => isUnlocked && onLectureSelect(node)}
+                  >
+                    {/* Subtle shimmer effect */}
+                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-out"></div>
+                    
+                    {/* Status Indicator */}
+                    <div className={`absolute -top-2 -right-2 w-7 h-7 rounded-full ${getStatusColor(status)} flex items-center justify-center text-white text-xs shadow-lg transition-all duration-300 group-hover:scale-110 ${
+                      status === 'completed' ? 'animate-pulse-glow' : ''
+                    }`}>
+                      {getStatusIcon(status)}
+                    </div>
+                    
+                    {/* Level Badge */}
+                    <div className={`inline-block px-2 py-1 rounded-full text-xs font-medium mb-2 ${darkMode ? 'bg-gray-700 text-gray-300' : 'bg-gray-200 text-gray-700'}`}>
+                      Level {node.level}
+                    </div>
+                    
+                    {/* Category Badge */}
+                    <div className={`inline-block px-2 py-1 rounded-full text-xs font-medium mb-2 ml-1 ${getCategoryColor(node.category)} shadow-sm transition-all duration-300 group-hover:scale-105`}>
+                      {node.category}
+                    </div>
+                    
+                    <h3 className={`font-bold ${darkMode ? 'text-white' : 'text-gray-900'} mb-2 text-sm group-hover:text-blue-600 transition-colors duration-300`}>
+                      {node.title}
+                    </h3>
+                    <p className={`text-xs ${darkMode ? 'text-gray-300' : 'text-gray-600'} mb-3 leading-relaxed ${darkMode ? 'group-hover:text-gray-200' : 'group-hover:text-gray-700'} transition-colors duration-300`}>
+                      {node.description}
+                    </p>
+                    
+                    {/* Node Stats */}
+                    <div className="flex items-center justify-between text-xs">
+                      <span className={`px-2 py-1 rounded-full ${getDifficultyColor(node.difficulty)}`}>
+                        {node.difficulty}
+                      </span>
+                      <span className={`${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>
+                        {node.duration}
+                      </span>
+                    </div>
                   </div>
                 </div>
-              </div>
-            );
-          })}
+              );
+            })}
+          </div>
         </div>
       </div>
 

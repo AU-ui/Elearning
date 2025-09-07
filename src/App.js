@@ -172,13 +172,14 @@ function App() {
 
           {/* Main Content */}
           <div className="flex-1">
-            {activeTab === 'family-tree' && (
-              <CleanTreeView 
-                onLectureSelect={handleLectureSelect}
-                userProgress={userProgress}
-                darkMode={darkMode}
-              />
-            )}
+      {activeTab === 'family-tree' && (
+        <CleanTreeView
+          onLectureSelect={handleLectureSelect}
+          userProgress={userProgress}
+          darkMode={darkMode}
+          selectedLecture={selectedLecture}
+        />
+      )}
             {activeTab === 'lectures' && (
               <LecturePlayer 
                 lecture={selectedLecture}

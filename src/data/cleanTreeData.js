@@ -19,7 +19,7 @@ export const cleanTreeData = {
       prerequisites: [],
       children: ['html-fundamentals', 'css-fundamentals'],
       level: 1,
-      position: { x: 50, y: 8 },
+      position: { x: 50, y: 5 },
       difficulty: 'Beginner',
       category: 'Foundation',
       tags: ['basics', 'introduction'],
@@ -27,7 +27,7 @@ export const cleanTreeData = {
       icon: '🌐'
     },
 
-    // LEVEL 2 (Generation 2) - Two main branches
+    // LEVEL 2 (Generation 2) - Two main branches with clear spacing
     'html-fundamentals': {
       id: 'html-fundamentals',
       title: 'HTML Fundamentals',
@@ -37,7 +37,7 @@ export const cleanTreeData = {
       prerequisites: ['web-dev-intro'],
       children: ['html-advanced', 'responsive-html'],
       level: 2,
-      position: { x: 25, y: 20 },
+      position: { x: 20, y: 20 },
       difficulty: 'Beginner',
       category: 'HTML',
       tags: ['html', 'structure'],
@@ -54,7 +54,7 @@ export const cleanTreeData = {
       prerequisites: ['web-dev-intro'],
       children: ['css-advanced', 'responsive-css'],
       level: 2,
-      position: { x: 75, y: 20 },
+      position: { x: 80, y: 20 },
       difficulty: 'Beginner',
       category: 'CSS',
       tags: ['css', 'styling'],
@@ -62,7 +62,7 @@ export const cleanTreeData = {
       icon: '🎨'
     },
 
-    // LEVEL 3 (Generation 3) - Four branches
+    // LEVEL 3 (Generation 3) - Four branches with clear spacing
     'html-advanced': {
       id: 'html-advanced',
       title: 'Advanced HTML',
@@ -72,7 +72,7 @@ export const cleanTreeData = {
       prerequisites: ['html-fundamentals'],
       children: ['javascript-basics'],
       level: 3,
-      position: { x: 15, y: 32 },
+      position: { x: 10, y: 35 },
       difficulty: 'Intermediate',
       category: 'HTML',
       tags: ['html5', 'apis'],
@@ -89,7 +89,7 @@ export const cleanTreeData = {
       prerequisites: ['html-fundamentals'],
       children: ['javascript-basics'],
       level: 3,
-      position: { x: 35, y: 32 },
+      position: { x: 30, y: 35 },
       difficulty: 'Intermediate',
       category: 'HTML',
       tags: ['responsive', 'mobile'],
@@ -106,7 +106,7 @@ export const cleanTreeData = {
       prerequisites: ['css-fundamentals'],
       children: ['javascript-basics'],
       level: 3,
-      position: { x: 65, y: 32 },
+      position: { x: 70, y: 35 },
       difficulty: 'Intermediate',
       category: 'CSS',
       tags: ['advanced', 'animations'],
@@ -123,7 +123,7 @@ export const cleanTreeData = {
       prerequisites: ['css-fundamentals'],
       children: ['javascript-basics'],
       level: 3,
-      position: { x: 85, y: 32 },
+      position: { x: 90, y: 35 },
       difficulty: 'Intermediate',
       category: 'CSS',
       tags: ['responsive', 'media-queries'],
@@ -141,7 +141,7 @@ export const cleanTreeData = {
       prerequisites: ['html-advanced', 'responsive-html', 'css-advanced', 'responsive-css'],
       children: ['javascript-dom', 'javascript-async'],
       level: 4,
-      position: { x: 50, y: 44 },
+      position: { x: 50, y: 50 },
       difficulty: 'Beginner',
       category: 'JavaScript',
       tags: ['javascript', 'programming'],
@@ -149,7 +149,7 @@ export const cleanTreeData = {
       icon: '⚡'
     },
 
-    // LEVEL 5 (Generation 5) - JavaScript branches
+    // LEVEL 5 (Generation 5) - JavaScript branches with clear spacing
     'javascript-dom': {
       id: 'javascript-dom',
       title: 'JavaScript DOM',
@@ -159,7 +159,7 @@ export const cleanTreeData = {
       prerequisites: ['javascript-basics'],
       children: ['react-basics'],
       level: 5,
-      position: { x: 30, y: 56 },
+      position: { x: 25, y: 65 },
       difficulty: 'Intermediate',
       category: 'JavaScript',
       tags: ['dom', 'events'],
@@ -176,7 +176,7 @@ export const cleanTreeData = {
       prerequisites: ['javascript-basics'],
       children: ['node-basics'],
       level: 5,
-      position: { x: 70, y: 56 },
+      position: { x: 75, y: 65 },
       difficulty: 'Advanced',
       category: 'JavaScript',
       tags: ['async', 'promises'],
@@ -184,7 +184,7 @@ export const cleanTreeData = {
       icon: '🔄'
     },
 
-    // LEVEL 6 (Generation 6) - Framework branches
+    // LEVEL 6 (Generation 6) - Framework branches with clear spacing
     'react-basics': {
       id: 'react-basics',
       title: 'React Fundamentals',
@@ -194,7 +194,7 @@ export const cleanTreeData = {
       prerequisites: ['javascript-dom'],
       children: ['fullstack-project'],
       level: 6,
-      position: { x: 30, y: 68 },
+      position: { x: 25, y: 80 },
       difficulty: 'Intermediate',
       category: 'React',
       tags: ['react', 'components'],
@@ -211,7 +211,7 @@ export const cleanTreeData = {
       prerequisites: ['javascript-async'],
       children: ['fullstack-project'],
       level: 6,
-      position: { x: 70, y: 68 },
+      position: { x: 75, y: 80 },
       difficulty: 'Intermediate',
       category: 'Backend',
       tags: ['nodejs', 'backend'],
@@ -229,7 +229,7 @@ export const cleanTreeData = {
       prerequisites: ['react-basics', 'node-basics'],
       children: ['deployment', 'testing', 'optimization'],
       level: 7,
-      position: { x: 50, y: 80 },
+      position: { x: 50, y: 95 },
       difficulty: 'Advanced',
       category: 'Project',
       tags: ['fullstack', 'project'],
@@ -237,7 +237,7 @@ export const cleanTreeData = {
       icon: '🎯'
     },
 
-    // LEVEL 8 (Generation 8) - Final leaf nodes (cards at edges)
+    // LEVEL 8 (Generation 8) - Final leaf nodes with clear spacing
     'deployment': {
       id: 'deployment',
       title: 'Deployment & DevOps',
@@ -247,7 +247,7 @@ export const cleanTreeData = {
       prerequisites: ['fullstack-project'],
       children: [],
       level: 8,
-      position: { x: 25, y: 92 },
+      position: { x: 20, y: 110 },
       difficulty: 'Advanced',
       category: 'DevOps',
       tags: ['deployment', 'devops'],
@@ -264,7 +264,7 @@ export const cleanTreeData = {
       prerequisites: ['fullstack-project'],
       children: [],
       level: 8,
-      position: { x: 50, y: 92 },
+      position: { x: 50, y: 110 },
       difficulty: 'Advanced',
       category: 'Testing',
       tags: ['testing', 'quality'],
@@ -281,7 +281,7 @@ export const cleanTreeData = {
       prerequisites: ['fullstack-project'],
       children: [],
       level: 8,
-      position: { x: 75, y: 92 },
+      position: { x: 80, y: 110 },
       difficulty: 'Advanced',
       category: 'Performance',
       tags: ['optimization', 'performance'],
