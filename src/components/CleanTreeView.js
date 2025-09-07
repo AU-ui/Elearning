@@ -295,11 +295,11 @@ const CleanTreeView = ({ onLectureSelect, userProgress, darkMode, selectedLectur
                 >
                   {/* Family Tree Card */}
                   <div
-                    className={`group relative rounded-xl border-2 cursor-pointer transition-all duration-500 transform ${
+                    className={`group relative rounded-2xl border-2 cursor-pointer transition-all duration-700 transform ${
                       selectedLecture && selectedLecture.id === node.id
-                        ? 'w-64 p-5 scale-110 -translate-y-3 border-blue-600 bg-gradient-to-br from-blue-100 to-blue-200 shadow-xl shadow-blue-600/50'
+                        ? 'w-72 p-6 scale-125 -translate-y-4 border-blue-500 bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 shadow-2xl shadow-blue-500/60 ring-4 ring-blue-200/50'
                         : isUnlocked
-                          ? 'w-56 p-4 hover:scale-105 hover:-translate-y-2 border-gray-200 hover:border-gray-300 hover:shadow-2xl hover:shadow-gray-500/25'
+                          ? 'w-56 p-4 hover:scale-105 hover:-translate-y-2 border-gray-200 hover:border-gray-300 hover:shadow-xl hover:shadow-gray-500/30'
                           : 'w-56 p-4 border-gray-300 cursor-not-allowed opacity-60'
                     } ${
                       status === 'completed' && !(selectedLecture && selectedLecture.id === node.id)
@@ -312,8 +312,15 @@ const CleanTreeView = ({ onLectureSelect, userProgress, darkMode, selectedLectur
                     } relative overflow-hidden`}
                     onClick={() => isUnlocked && onLectureSelect(node)}
                   >
-                    {/* Subtle shimmer effect */}
-                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-out"></div>
+                    {/* Enhanced shimmer effect */}
+                    <div className={`absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-out ${
+                      selectedLecture && selectedLecture.id === node.id ? 'via-blue-200/20' : ''
+                    }`}></div>
+                    
+                    {/* Selected card glow effect */}
+                    {selectedLecture && selectedLecture.id === node.id && (
+                      <div className="absolute inset-0 bg-gradient-to-br from-blue-400/10 via-transparent to-purple-400/10 rounded-2xl animate-pulse"></div>
+                    )}
                     
                     {/* Status Indicator */}
                     <div className={`absolute -top-2 -right-2 w-7 h-7 rounded-full ${getStatusColor(status)} flex items-center justify-center text-white text-xs shadow-lg transition-all duration-300 group-hover:scale-110 ${
