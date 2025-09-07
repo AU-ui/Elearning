@@ -176,11 +176,11 @@ const CleanTreeView = ({ onLectureSelect, userProgress, darkMode, selectedLectur
   };
 
   return (
-    <div className={`${darkMode ? 'bg-gray-900/80 text-white' : 'bg-white/80 text-gray-900'} backdrop-blur-md rounded-2xl shadow-2xl border ${darkMode ? 'border-gray-700/20' : 'border-white/20'} p-6 animate-slide-in-up relative overflow-hidden`}>
+    <div className={`${darkMode ? 'bg-gray-900/80 text-white' : 'bg-white/80 text-gray-900'} backdrop-blur-md rounded-2xl shadow-2xl border ${darkMode ? 'border-gray-700/20' : 'border-white/20'} p-8 animate-slide-in-up relative overflow-hidden`}>
       {/* Subtle gradient overlay */}
       <div className={`absolute inset-0 ${darkMode ? 'bg-gradient-to-br from-gray-800/20 to-gray-900/20' : 'bg-gradient-to-br from-blue-50/30 to-purple-50/30'} pointer-events-none`}></div>
       
-      <div className="text-left mb-6 relative z-10">
+      <div className="text-left mb-8 mt-8 relative z-10">
         <div className="inline-flex items-center justify-center w-12 h-12 bg-gradient-to-r from-blue-500 to-purple-600 rounded-2xl mb-3 shadow-lg animate-float">
           <span className="text-xl">🌳</span>
         </div>
@@ -213,7 +213,7 @@ const CleanTreeView = ({ onLectureSelect, userProgress, darkMode, selectedLectur
       </div>
 
       {/* Search and Filter Controls */}
-      <div className="mb-6 relative z-10">
+      <div className="mb-8 mt-4 relative z-10">
         <div className={`${darkMode ? 'bg-gray-800/70 border-gray-700/20' : 'bg-white/70 border-white/20'} backdrop-blur-md rounded-2xl shadow-xl border p-6 relative overflow-hidden`}>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             {/* Search Bar */}
@@ -272,7 +272,7 @@ const CleanTreeView = ({ onLectureSelect, userProgress, darkMode, selectedLectur
       </div>
 
       {/* Family Tree Layout */}
-      <div className="relative z-10">
+      <div className="relative z-10 mt-6">
         <div className="relative min-h-screen overflow-x-auto">
           {/* Tree Connections */}
           {renderTreeConnections()}
