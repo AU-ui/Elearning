@@ -1,13 +1,21 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" translate="no">
   <head>
     <meta charset="utf-8" />
     <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#000000" />
+    <meta name="google" content="notranslate" />
+    <meta name="robots" content="noindex, nofollow" />
+    <meta http-equiv="Content-Language" content="en-US" />
+    <meta name="language" content="English" />
+    <meta name="geo.region" content="US" />
+    <meta name="geo.country" content="United States" />
+    <meta name="locale" content="en_US" />
+    <meta name="Accept-Language" content="en-US,en;q=0.9" />
     <meta
       name="description"
-      content="Web site created using create-react-app"
+      content="Sequential Learning Platform - Master web development step by step"
     />
     <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
     <!--
@@ -24,11 +32,27 @@
       work correctly both with client-side routing and a non-root public URL.
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
-    <title>React App</title>
+    <title>Learning Platform - Sequential Web Development Course</title>
   </head>
-  <body>
+  <body translate="no" class="notranslate">
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
+    <script>
+      // Force English language
+      document.documentElement.lang = 'en-US';
+      if (navigator.language) {
+        Object.defineProperty(navigator, 'language', {
+          value: 'en-US',
+          writable: false
+        });
+      }
+      if (navigator.languages) {
+        Object.defineProperty(navigator, 'languages', {
+          value: ['en-US', 'en'],
+          writable: false
+        });
+      }
+    </script>
     <!--
       This HTML file is a template.
       If you open it directly in the browser, you will see an empty page.
