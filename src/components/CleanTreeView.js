@@ -297,9 +297,9 @@ const CleanTreeView = ({ onLectureSelect, userProgress, darkMode, selectedLectur
                   <div
                     className={`group relative w-56 p-4 rounded-xl border-2 cursor-pointer transition-all duration-500 transform hover:scale-105 hover:-translate-y-2 ${
                       selectedLecture && selectedLecture.id === node.id
-                        ? 'border-pink-400 bg-gradient-to-br from-pink-50 to-rose-50 shadow-lg shadow-pink-500/30'
+                        ? 'border-blue-500 bg-gradient-to-br from-blue-50 to-indigo-50 shadow-lg shadow-blue-500/30'
                         : isUnlocked
-                          ? 'border-blue-300 hover:border-blue-500 hover:shadow-2xl hover:shadow-blue-500/25'
+                          ? 'border-gray-300 hover:border-gray-400 hover:shadow-2xl hover:shadow-gray-500/25'
                           : 'border-gray-300 cursor-not-allowed opacity-60'
                     } ${status === 'completed' ? 'bg-gradient-to-br from-green-50 to-emerald-50 border-green-300 shadow-lg shadow-green-500/20' : darkMode ? 'bg-gray-800/90 backdrop-blur-sm' : 'bg-white/90 backdrop-blur-sm'} relative overflow-hidden`}
                     onClick={() => isUnlocked && onLectureSelect(node)}
