@@ -165,16 +165,10 @@ const CourseTree = ({ onLectureSelect, userProgress, darkMode }) => {
         <div className="inline-flex items-center justify-center w-12 h-12 bg-gradient-to-r from-blue-500 to-purple-600 rounded-2xl mb-3 shadow-lg animate-float">
           <span className="text-xl">🚀</span>
         </div>
-        <div className="flex items-center justify-between mb-2">
+        <div className="mb-2">
           <h2 className="text-2xl font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 bg-clip-text text-transparent animate-gradient">
             {courseData.title}
           </h2>
-          <button
-            onClick={() => setDarkMode(!darkMode)}
-            className="p-2 rounded-xl bg-gray-100 hover:bg-gray-200 transition-all duration-300 transform hover:scale-105"
-          >
-            {darkMode ? '☀️' : '🌙'}
-          </button>
         </div>
         <p className={`text-sm ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>{courseData.description}</p>
         
